@@ -2,6 +2,7 @@ from app import app
 from flask import Response, request
 import json
 import controller.users_controller as usc
+import controller.apis_controller as ac
 
 
 @app.route("/")
@@ -29,18 +30,9 @@ def get_user_by_id(id):
 
 
 def delete_user_by_id(id):
-
-    # vi använder inte någon lista som heter "users" eftersom vi har strukturerat vårat projekt enlgt mvc(model-view-controller) (mappstrukturen)
-        i = 0;
-        for user in get_user_by_id:
-            if get_user_by_id["id"] == id:
-                users.pop( i )
-                response = Response( "", status=204 )
-                return response
-            i += 1
-
-        response = Response("", status=404, mimetype='application/json')
-        return response
+    user = usc.delete_user(id)
+    response = Response("", status=404, mimetype='application/json')
+    return response
 
 
 def put_user_by_id(id):
@@ -67,3 +59,18 @@ def patch_user(id):
     request_data = request.get_json()
     usc.change_fields(id, request_data)
     pass
+
+
+# ALL API ROUTES
+
+@app.route('/apis/<string:id>', methods=['GET'])
+def get_all_apis_for_user(id):
+    apis = ac.get_all_apis(id)
+    return Response(json.dumps(apis), mimetype='application/json')
+
+
+@app.route('/apis/<string:id>', methods=['POST'])
+def add_api_to_user(id):
+    data = request.get_json()
+    ac.add_api(id, data)
+    return json.dumps({'Success': True}), 201, {'ContentType': 'application/json'}

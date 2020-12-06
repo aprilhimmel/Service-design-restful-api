@@ -38,11 +38,13 @@ class UsersRepo:
         return
 
     def change_password(self, id, password):
+        user = User.query.get(id)
         user.password = password
         session.commit()
         return
 
     def change_email(self, id, email):
+        user = User.query.get(id)
         user.email = email
         session.commit()
         return
