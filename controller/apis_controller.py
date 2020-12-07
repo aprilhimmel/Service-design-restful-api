@@ -3,7 +3,7 @@ ar = ApisRepo()
 
 
 def get_all_apis(user_id):
-    apis = ar.get_all_apis()
+    apis = ar.get_all_apis(user_id)
     apis = [api.to_dict() for api in apis]
     return apis
 

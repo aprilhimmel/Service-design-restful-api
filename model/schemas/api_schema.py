@@ -8,3 +8,6 @@ class ApiSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True  # "Optional: deserialize to model instances"
 
+
+api_schema = ApiSchema
+apis_schema = ApiSchema(many=True)
