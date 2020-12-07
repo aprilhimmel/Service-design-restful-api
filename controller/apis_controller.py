@@ -16,3 +16,14 @@ def api_by_id(id):
 def add_api(id, data):
     ar.add_api(id, data)
     pass
+
+
+def change_api_name():
+    pass
+
+
+def change_api_description():
+    pass
+
+def delete_api():
+    pass

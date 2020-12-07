@@ -21,6 +21,10 @@ def add_user(data):
     return
 
 
+def delete_user(id):
+    pass
+
+
 def change_entire_user_info(id, new_user_data):
     new_user = (id, new_user_data['username'], new_user_data['password'], new_user_data['email'], new_user_data['apis'])
     gr.changed_user(id, new_user)
@@ -49,5 +53,3 @@ def change_fields(id, request_data):
         return
     return
 
-def delete_user(id):
-    pass
