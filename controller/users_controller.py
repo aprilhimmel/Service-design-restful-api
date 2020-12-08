@@ -23,7 +23,8 @@ def add_user(data):
 
 
 def delete_user(id):
-    pass
+    ur.delete_user(id)
+    return
 
 
 def change_entire_user_info(id, new_user_data):

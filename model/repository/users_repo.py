@@ -18,8 +18,12 @@ class UsersRepo:
         user = User.query.get(id)
         return user
 
-    def delete_user(self):
-        pass
+
+    def delete_user(self, id):
+        user = session.query(User).get(id)
+        session.delete(user)
+        session.commit()
+        return
 
 
     def create_user(self, user):

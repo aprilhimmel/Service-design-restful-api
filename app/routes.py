@@ -13,7 +13,7 @@ def index():
 @app.route('/users', methods=['GET'])
 def get_all_users():
     users = usc.get_all_users()
-    return Response(json.dumps(users), mimetype='application/json')
+    return json.dumps(users), 200, {'Content-Type': 'application/json'}
 
 
 @app.route('/users', methods=['POST'])
