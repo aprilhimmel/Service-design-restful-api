@@ -26,26 +26,23 @@ class UsersRepo:
     def changed_user(self, _id, new_user):
         old_user_info = User.query.get(_id)
         session.delete(old_user_info)
-        new_user = User(id=new_user['id'], username=new_user['username'], password=new_user['password'], email=new_user['email'])  #  , apis=new_user['apis'])
+        new_user = User(id=new_user['id'], username=new_user['username'], password=new_user['password'], email=new_user['email'])
         session.add(new_user)
         session.commit()
         return
 
     def change_username(self, id, username):
-        user = User.query.get(id)
-        user.username = username
+        session.query(User).filter(User.id == id).update({'username': username})
         session.commit()
         return
 
     def change_password(self, id, password):
-        user = User.query.get(id)
-        user.password = password
+        session.query(User).filter(User.id == id).update({'password': password})
         session.commit()
         return
 
     def change_email(self, id, email):
-        user = User.query.get(id)
-        user.email = email
+        session.query(User).filter(User.id == id).update({'email': email})
         session.commit()
         return
 
