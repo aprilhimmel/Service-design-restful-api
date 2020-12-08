@@ -39,7 +39,7 @@ def delete_user_by_id(id):
 def put_user_by_id(id):
     request_data = request.get_json()
     usc.change_entire_user_info(id, request_data)
-    return json.dumps({"status": "Complete user update performed"}), 204, {'Content-Type': 'application/json'}
+    return json.dumps({"status": "Complete user update performed"}), 200, {'Content-Type': 'application/json'}
 
 
 @app.route('/users/<string:id>', methods=['PATCH'])
@@ -72,3 +72,19 @@ def add_api_to_user(id):
 # ROUTE FÖR ADRESSERING ENLIGT ANVÄNDAREN
 
 
+@app.route("/apis/<path:uri>", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+def apis(uri):
+    parts = uri.split('/')
+    if len(parts) < 2:
+        return json.dumps({'error: url must contain at least username and api name'})
+    user = parts[0]
+    api = parts[1]
+    uri = parts[2:]
+    method = request.method
+    resp ={
+        'method': method,
+        'user': user,
+        'api': api,
+        "uri-parts": uri,
+    }
+    return json.dumps(resp)

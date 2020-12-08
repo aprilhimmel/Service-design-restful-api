@@ -13,9 +13,14 @@ class UsersRepo:
         user_schema.dump(User.query.all())
         return users
 
+
     def get_user_by_id(self, id):
         user = User.query.get(id)
         return user
+
+    def delete_user(self):
+        pass
+
 
     def create_user(self, user):
         user = User(username=user['username'], password=user['password'], email=user['email'])
@@ -23,11 +28,13 @@ class UsersRepo:
         session.commit()
         return
 
-    def changed_user(self, _id, new_user):
-        old_user_info = User.query.get(_id)
-        session.delete(old_user_info)
-        new_user = User(id=new_user['id'], username=new_user['username'], password=new_user['password'], email=new_user['email'])
-        session.add(new_user)
+    def update_user(self, _id, new_username, new_password, new_email):
+        update = session.query(User).filter(User.id == _id).first()
+        update.username = new_username
+        session.commit()
+        update.password = new_password
+        session.commit()
+        update.email = new_email
         session.commit()
         return
 

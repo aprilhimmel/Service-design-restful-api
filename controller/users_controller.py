@@ -1,23 +1,24 @@
 from flask import json
 
 from model.repository.users_repo import UsersRepo
+from model.models.user import User
 
-gr = UsersRepo()
+ur = UsersRepo()
 
 
 def get_all_users():
-    users = gr.get_all_users()
+    users = ur.get_all_users()
     users = [user.to_dict() for user in users]
     return users
 
 
 def get_user_by_id(id):
-    user = gr.get_user_by_id(id)
+    user = ur.get_user_by_id(id)
     return user
 
 
 def add_user(data):
-    gr.create_user(data)
+    ur.create_user(data)
     return
 
 
@@ -26,23 +27,30 @@ def delete_user(id):
 
 
 def change_entire_user_info(id, new_user_data):
-    new_user = (id, new_user_data['username'], new_user_data['password'], new_user_data['email'])
-    gr.changed_user(id, new_user)
+    new_username = new_user_data['username']
+    new_password = new_user_data['password']
+    new_email = new_user_data['email']
+    ur.update_user(id, new_username, new_password, new_email)
+#    username = new_user_data['username']
+#   password = new_user_data['password']
+#   email = new_user_data['email']
+
+    #return ur.update_user(user).to_dict()
     return
 
 
 def change_fields(id, request_data):
     if "username" in request_data:
         username = request_data['username']
-        gr.change_username(id, username)
+        ur.change_username(id, username)
 
     if "password" in request_data:
         password = request_data['password']
-        gr.change_password(id, password)
-        
+        ur.change_password(id, password)
+
     if "email" in request_data:
         email = request_data['email']
-        gr.change_email(id, email)
+        ur.change_email(id, email)
         return
     return
 
