@@ -3,5 +3,7 @@ pr = PathRepo()
 
 
 def user_exists(user):
-    pr.existing_user(user)
-    return
+    if pr.existing_user(user):
+        return True
+    else:
+        return False
