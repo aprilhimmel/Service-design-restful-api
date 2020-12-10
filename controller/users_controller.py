@@ -32,11 +32,6 @@ def change_entire_user_info(id, new_user_data):
     new_password = new_user_data['password']
     new_email = new_user_data['email']
     ur.update_user(id, new_username, new_password, new_email)
-#    username = new_user_data['username']
-#   password = new_user_data['password']
-#   email = new_user_data['email']
-
-    #return ur.update_user(user).to_dict()
     return
 
 

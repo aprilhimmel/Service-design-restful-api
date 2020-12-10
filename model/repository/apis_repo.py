@@ -21,7 +21,19 @@ class ApisRepo:
         session.commit()
         return
 
-    def change_api(self, id, data):
+    def update_api(self, id, username, name, description):
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            return  # {'error': 'The user does not exist'}, hur????
+        elif user.username == username:
+            update = session.query(Api).filter(Api.id == id).first()
+            update.api_name = name
+            session.commit()
+            update.description = description
+            session.commit()
+            return
+
+    def change_field(self, id, data):
         pass
 
     def delete_api(self, id):

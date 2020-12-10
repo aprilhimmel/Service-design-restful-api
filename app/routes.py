@@ -3,6 +3,7 @@ from flask import Response, request
 import json
 import controller.users_controller as usc
 import controller.apis_controller as ac
+import controller.path_controller as pc
 
 
 @app.route("/")
@@ -75,24 +76,37 @@ def delete_api(id):
     return json.dumps({'Success': True}), 200, {'Content-Type': 'application/json'}
 
 
+@app.route('/metaapi/users/<string:username>/apis/<string:apiid>', methods=['PUT'])
+def change_api(username, apiid):
+    data = request.get_json()
+    ac.change_api(apiid, username, data)
+    return json.dumps({'Success': True}), 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/metaapi/users/<string:id>/apis', methods=['PATCH'])
+def change_api_field(id):
+    return json.dumps({'Success': True}), 200, {'Content-Type': 'application/json'}
+
 
 # ROUTE FÖR ADRESSERING ENLIGT ANVÄNDAREN
+# metaapi/users/alice/awesomeapi/stuff
 
-#
-# @app.route("/apis/<path:uri>", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
-# def apis(uri):
-#     parts = uri.split('/')
-#     if len(parts) < 2:
-#         return json.dumps({'error: url must contain at least username and api name'})
-#     user = parts[0]
-#     if not parts[0] == {user_name}# check against our users list
-#     api = parts[1]
-#     uri = parts[2:]
-#     method = request.method
-#     resp = {
-#         'method': method,
-#         'user': user,
-#         'api': api,
-#         "uri-parts": uri,
-#     }
-#     return json.dumps(resp)
+@app.route("/apis/<path:uri>", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+def apis(uri):
+    parts = uri.split('/')
+    if len(parts) < 2:
+        return json.dumps({'error: url must contain at least username and api name'})
+    user = parts[0]
+    if not pc.user_exists(user):
+        return json.dumps({'error': 'The user does not exist'})
+    # check against our users list
+    api = parts[1]
+    uri = parts[2:]
+    method = request.method
+    resp = {
+        'method': method,
+        'user': user,
+        'api': api,
+        "uri-parts": uri,
+    }
+    return json.dumps(resp)

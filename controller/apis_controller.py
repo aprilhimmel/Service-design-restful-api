@@ -18,6 +18,13 @@ def add_api(id, data):
     pass
 
 
+def change_api(id, username, data):
+    new_name = data['api_name']
+    new_description = data['description']
+    ar.update_api(id, username, new_name, new_description)
+    return
+
+
 def change_api_name():
     pass
 
