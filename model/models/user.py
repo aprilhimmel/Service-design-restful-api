@@ -16,8 +16,8 @@ class User(db.Model): # parent till apis
         return {'user_id': self.id, 'username': self.username, 'password': self.password,
                 'email': self.email, "apis": [api.to_dict() for api in self.apis]}
 
-    def is_user(self):
-        pass
+#    def is_user(self):
+#        pass
 
 #db.create_all()
 #db.session.commit()

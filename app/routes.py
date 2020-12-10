@@ -99,8 +99,11 @@ def apis(uri):
     user = parts[0]
     if not pc.user_exists(user):
         return json.dumps({'error': 'The user does not exist'})
-    # check against our users list
+    else:
+        user_id = pc.check_user_id(user)
     api = parts[1]
+    if not pc.api_exists(api, user_id):
+        return json.dumps({'error': 'The api does not exist'})
     uri = parts[2:]
     method = request.method
     resp = {
