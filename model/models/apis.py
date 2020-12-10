@@ -9,8 +9,8 @@ class Api(db.Model):
     api_name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    user = relationship("User") # ägaren/parent
-    endpoints = relationship("Endpoint")
+    user = relationship("User", cascade="save-update") # ägaren/parent
+    endpoints = relationship("Endpoint", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {'id': self.id, 'api_name': self.api_name, 'description': self.description,

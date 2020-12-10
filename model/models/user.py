@@ -10,7 +10,7 @@ class User(db.Model): # parent till apis
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
-    apis = relationship("Api")
+    apis = relationship("Api", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {'user_id': self.id, 'username': self.username, 'password': self.password,

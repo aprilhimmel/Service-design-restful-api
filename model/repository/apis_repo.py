@@ -23,3 +23,9 @@ class ApisRepo:
 
     def change_api(self, id, data):
         pass
+
+    def delete_api(self, id):
+        api = session.query(Api).get(id)
+        session.delete(api)
+        session.commit()
+        return

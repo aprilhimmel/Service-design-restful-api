@@ -13,18 +13,15 @@ class UsersRepo:
         user_schema.dump(User.query.all())
         return users
 
-
     def get_user_by_id(self, id):
         user = User.query.get(id)
         return user
-
 
     def delete_user(self, id):
         user = session.query(User).get(id)
         session.delete(user)
         session.commit()
         return
-
 
     def create_user(self, user):
         user = User(username=user['username'], password=user['password'], email=user['email'])

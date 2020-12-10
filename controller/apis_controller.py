@@ -25,5 +25,7 @@ def change_api_name():
 def change_api_description():
     pass
 
-def delete_api():
-    pass
+
+def delete_api(id):
+    ar.delete_api(id)
+    return
