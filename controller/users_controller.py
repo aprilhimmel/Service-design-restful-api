@@ -17,6 +17,11 @@ def get_user_by_id(id):
     return user
 
 
+def get_user_by_name(username):
+    user = ur.get_user_by_name(username)
+    return user
+
+
 def add_user(data):
     ur.create_user(data)
     return

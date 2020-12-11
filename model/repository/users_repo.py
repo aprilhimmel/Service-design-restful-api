@@ -17,6 +17,10 @@ class UsersRepo:
         user = User.query.get(id)
         return user
 
+    def get_user_by_name(self, username):
+        user = User.query.filter_by(username=username).first()
+        return user
+
     def delete_user(self, id):
         user = session.query(User).get(id)
         session.delete(user)
@@ -51,11 +55,5 @@ class UsersRepo:
 
     def change_email(self, id, email):
         session.query(User).filter(User.id == id).update({'email': email})
-        session.commit()
-        return
-
-    def change_apis(self, id, apis):
-        user.apis = apis
-        # HUR UPPDATERA EN RELATION?
         session.commit()
         return

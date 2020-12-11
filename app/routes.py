@@ -4,6 +4,8 @@ import json
 import controller.users_controller as usc
 import controller.apis_controller as ac
 import controller.path_controller as pc
+import app.create_schemas as schema
+import controller.endpoints_controller as ec
 
 
 @app.route("/")
@@ -24,10 +26,19 @@ def add_user():
     return json.dumps({'Success': True}), 201, {'Content-Type': 'application/json'}
 
 
-@app.route('/metaapi/users/<string:id>', methods=['GET'])
+@app.route('/metaapi/users/<int:id>', methods=['GET'])
 def get_user_by_id(id):
     user = usc.get_user_by_id(id)
     return json.dumps(user.to_dict()), 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/metaapi/users/<string:username>', methods=['GET'])
+def get_user_by_name(username):
+    user = usc.get_user_by_name(username)
+    if not pc.user_exists(username):
+        return json.dumps({'error': 'User does not exist'})
+    else:
+        return json.dumps(user.to_dict()), 200, {'Content-Type': 'application/json'}
 
 
 @app.route('/metaapi/users/<string:id>', methods=['DELETE'])
@@ -88,8 +99,19 @@ def change_api_field(id):
     return json.dumps({'Success': True}), 200, {'Content-Type': 'application/json'}
 
 
+# ALL ENDPOINT ROUTES
+
+
+@app.route('/metaapi/users/<string:username>/apis/<string:apiname>', methods=['POST'])
+def add_endpoint(username, apiname):
+    data_string = request.get_json()
+    ec.add_endpoint(username, apiname, data_string)
+    return json.dumps({'Success': True}), 201, {'Content-Type': 'application/json'}
+
+
 # ROUTE FÖR ADRESSERING ENLIGT ANVÄNDAREN
 # metaapi/users/alice/awesomeapi/stuff
+# http://127.0.0.1:5000/apis/alice/AwesomeAPI/dan
 
 @app.route("/apis/<path:uri>", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 def apis(uri):
@@ -98,14 +120,38 @@ def apis(uri):
         return json.dumps({'error: url must contain at least username and api name'})
     user = parts[0]
     if not pc.user_exists(user):
-        return json.dumps({'error': 'The user does not exist'})
+        return json.dumps({'error': 'User does not exist'})
     else:
         user_id = pc.check_user_id(user)
     api = parts[1]
     if not pc.api_exists(api, user_id):
-        return json.dumps({'error': 'The api does not exist'})
+        return json.dumps({'error': 'Api does not exist'})
+    else:
+        api_id = pc.check_api_id(api)
     uri = parts[2:]
+    for u in uri:
+        if not pc.endpoint_exists(u, api_id):
+            return json.dumps({'error': 'Endpoint does not exist'})
+        else:
+            return
+    # if post , create schema
+    # if get , gå in och hämta i en databas
+    # if put , ändra i databasen
+    # if patach, ändra i databasen
+
     method = request.method
+    if method == 'GET':
+        pc.get_req()
+    if method == 'POST':
+        data = request.get_json()
+        pc.post_req(data)
+    if method == 'PUT':
+        pass
+    if method == 'PATCH':
+        pass
+    if method == 'DELETE':
+        pass
+
     resp = {
         'method': method,
         'user': user,
@@ -113,3 +159,10 @@ def apis(uri):
         "uri-parts": uri,
     }
     return json.dumps(resp)
+
+
+def add_new_data():
+    data = request.get_json()
+    schema.create_schema_from_dict(data)
+
+
