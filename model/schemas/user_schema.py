@@ -9,3 +9,9 @@ class UserSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+
+user_schema = UserSchema
+users_schema = UserSchema (many=True)
+
+
+

@@ -2,15 +2,22 @@ from model.db import session
 from model.models.endpoints import Endpoint
 from model.schemas.endpoint_schema import EndpointSchema
 from model.models.apis import Api
+from model.models.endpoints import Endpoint
 
 
 class EndpointRepo:
+    # def get_all_endpoints(self, id):
+    #     for a, e in session.query(Api, Endpoint).filter(Api.id == Endpoint.api_id).all():
+    #         print("Api name: {} Invoice No: {} Amount: {}".format(a.api_name, e.api_name, e.endpoints))
+    #     endpoints = Endpoint.query.all()
+    #     endp_schema = EndpointSchema()
+    #     endp_schema.dump(Endpoint.query.all())
+    #     return endpoints
+
     def get_all_endpoints(self, id):
-        for a, e in session.query(Api, Endpoint).filter(Api.id == Endpoint.api_id).all():
-            print("Api name: {} Invoice No: {} Amount: {}".format(a.api_name, e.api_name, e.endpoints))
-        endpoints = Endpoint.query.all()
-        endp_schema = EndpointSchema()
-        endp_schema.dump(Endpoint.query.all())
+        endpoints = Endpoint.query.filter(Endpoint.api_id == id).all()
+        endpoint_schema = EndpointSchema(many=True)
+        endpoint_schema.dump(Endpoint.query.all())
         return endpoints
 
     def get_endpoint_uri(self, id):

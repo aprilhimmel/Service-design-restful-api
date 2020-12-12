@@ -8,3 +8,6 @@ class EndpointSchema(SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True  # "Optional: deserialize to model instances"
 
+
+endpoint_schema = EndpointSchema
+endpoints_schema = EndpointSchema(many=True)

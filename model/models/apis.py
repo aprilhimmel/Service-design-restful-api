@@ -1,8 +1,9 @@
 from sqlalchemy.orm import relationship
-from model.db import db
+from model.db import db, to_dict
 import model.models.endpoints
 
 
+@to_dict(['id', 'api_name', 'description', 'user_id'])
 class Api(db.Model):
     __tablename__ = "apis"
     id = db.Column(db.Integer, primary_key=True)

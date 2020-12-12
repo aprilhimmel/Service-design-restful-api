@@ -9,7 +9,7 @@ from flask import jsonify
 class UsersRepo:
     def get_all_users(self):
         users = User.query.all()
-        user_schema = UserSchema()
+        user_schema = UserSchema(many=True)
         user_schema.dump(User.query.all())
         return users
 

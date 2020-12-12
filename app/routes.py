@@ -101,11 +101,22 @@ def change_api_field(id):
 
 # ALL ENDPOINT ROUTES
 
+@app.route('/metaapi/users/<string:id>/apis/<string:apiID>/endpoints', methods=['GET'])
+def get_all_endpoints_for_api(id, apiID):
+    endpoints = ec.get_all_endpoints(apiID)
+    return json.dumps(endpoints), 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/metaapi/users/<string:id>/apis/<string:apiid>/endpoints/<string:end_id>', methods=['GET'])
+def get_uri(id, apiid, end_id):
+    endpoint = ec.get_endpoint_uri(end_id)
+    return json.dumps(endpoint), 200, {'Content-Type': 'application/json'}
+
 
 @app.route('/metaapi/users/<string:username>/apis/<string:apiname>', methods=['POST'])
 def add_endpoint(username, apiname):
     data_string = request.get_json()
-    ec.add_endpoint(username, apiname, data_string)
+    ec.add_endpoint(apiname, data_string)
     return json.dumps({'Success': True}), 201, {'Content-Type': 'application/json'}
 
 

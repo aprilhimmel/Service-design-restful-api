@@ -20,6 +20,18 @@ engine = create_engine('sqlite:///' + os.path.join(basedir, 'db.sqlite'))
 Session = sessionmaker(bind=engine)
 session = Session()
 
+
+def to_dict(attributes):
+    def wrapper(cls):
+        def to_dict(self):
+            for a in attributes:
+                if a not in self.__dict__:
+                    raise ValueError(f"{a} not a member of the object {self}")
+            return {attr: self.__dict__[attr] for attr in attributes}
+        cls.to_dict = to_dict
+        return cls
+    return wrapper
+
 # import sqlite3
 #
 #
